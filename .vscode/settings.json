@@ -1,0 +1,10 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/c/Python311/Lib/site-packages"
+    ],
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "python.analysis.extraPaths": [
+        "/c/Python311/Lib/site-packages"
+    ]
+}

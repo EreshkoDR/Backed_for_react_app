@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError as DjangoValueError
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import ValidationError
-from django.contrib.auth import authenticate
 
 from .models import User
 
@@ -23,9 +22,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=150, write_only=True)
 
     def validate_username(self, value: str):
-        incorrect_names = ['me', 'set_password']
+        incorrect_names = ['me', 'set_password', 'subscriptions']
         if value.lower() in incorrect_names:
-            raise ValidationError(f'You couldn`t use `{value}` like username')
+            raise ValidationError(f'You couldn`t use `{value}` as username')
         return value
 
     def validate_password(self, value):
@@ -64,9 +63,16 @@ class ChangePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField(max_length=150)
 
     def validate_current_password(self, value):
-        user: User = self.context['request'].user
-        if user.password != value:
+        user = self.instance
+        if not user.check_password(value):
             raise ValidationError('Incorrect password')
+        return value
+
+    def validate_new_password(self, value):
+        try:
+            validate_password(value)
+        except DjangoValueError as error:
+            raise ValidationError(error)
         return value
 
 
@@ -75,7 +81,7 @@ class UserSerializer(serializers.ModelSerializer):
         method_name='check_subscribed'
     )
 
-    def check_subscribed(self, author: User):
+    def check_subscribed(self, *args, **kwargs):
         """
         Проверка на подписку.
         Если есть подписка на пользователя, поле возвращается с флагом `True`.
@@ -83,10 +89,10 @@ class UserSerializer(serializers.ModelSerializer):
         try:
             user: User = self.context['request'].user
             if user.is_authenticated:
-                return user.follower.filter(author=author).exist()
-            return False
+                return user.follower.filter(author=args[0]).exists()
         except Exception:
             return False
+        return False
 
     class Meta:
         model = User

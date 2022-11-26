@@ -1,6 +1,6 @@
 from django.db import models
 
-from .validators import validate_min_value
+from backend.validators import validate_min_value
 from users.models import User
 
 
@@ -15,7 +15,6 @@ class Tag(models.Model):
     )
     slug = models.SlugField(
         'Слаг тега',
-
     )
 
 
@@ -30,37 +29,64 @@ class Ingredient(models.Model):
     )
 
 
-class Recipe(models.Model):
-    tags = models.ForeignKey(
-        Tag,
-        on_delete=models.SET_NULL
+class IngredientRecipe(models.Model):
+    ingredient = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+        related_name='ingredientrecipes'
     )
+    amount = models.IntegerField(validators=[validate_min_value])
+
+
+class Recipe(models.Model):
+    tags = models.ManyToManyField(Tag)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='recipes'
+        related_name='recipes',
     )
     ingredients = models.ManyToManyField(
-        Ingredient, through='IngredientRecipe'
+        IngredientRecipe,
+        related_name='recipes'
     )
     name = models.CharField(
         'Название рецепта',
-        max_length=200
+        max_length=200,
     )
     image = models.ImageField(
         'Изображение рецепта',
-        upload_to='recipes/images/'
+        upload_to='media/recipes/images/',
     )
     text = models.TextField(
         'Описание рецепта'
     )
     cooking_time = models.IntegerField(
         'Время приготовления в минутах',
-        validators=[validate_min_value]
+        validators=[validate_min_value],
     )
 
 
-class IngredientRecipe(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingerdient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    amount = models.IntegerField(validators=[validate_min_value])
+class FavoriteRecipe(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='favoriterecipes',
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='favoriterecipes',
+    )
+
+
+class ShoppingCart(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='carts',
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='carts'
+    )

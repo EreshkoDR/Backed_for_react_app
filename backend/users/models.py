@@ -28,3 +28,11 @@ class Subscription(models.Model):
         on_delete=models.CASCADE,
         related_name='following'
     )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=~models.Q(author=models.F('user')),
+                name='author_exclude_user'
+            ),
+        ]

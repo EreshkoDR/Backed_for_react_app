@@ -1,0 +1,11 @@
+from django.core.management.base import BaseCommand
+
+from .upload_ingredients import Command as IngredientsCommand
+from .upload_tags import Command as TagsCommand
+
+
+class Command(BaseCommand):
+    help = 'Upload data to Database'
+
+    def create_parser(self, prog_name: str, subcommand: str, **kwargs: Any) -> CommandParser:
+        return super().create_parser(prog_name, subcommand, **kwargs)

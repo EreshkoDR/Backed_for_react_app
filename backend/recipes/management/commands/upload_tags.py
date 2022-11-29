@@ -11,6 +11,9 @@ class Command(BaseCommand):
     """Management комманда для загрузки данных в БД."""
     help = 'Upload tags to database'
 
+    def batch(self, bulk: list):
+        Tag.objects.bulk_create(bulk)
+
     def handle(self, *args, **options):
         """
         Для загрузки большого объема используется
@@ -18,17 +21,19 @@ class Command(BaseCommand):
         """
         try:
             with open(DATA_DIR, 'r', encoding='utf-8') as csvfile:
-                ingredients = csv.reader(csvfile, dialect='excel')
+                tags = csv.reader(csvfile, dialect='excel')
                 bulk = []
-                count = 0
-                for name, color, slug in ingredients:
-                    bulk.append(
-                        Tag(
-                            name=name, color=color, slug=slug
-                        )
-                    )
-                    count += 1
-                Tag.objects.bulk_create(bulk)
+                for count, tags in enumerate(tags, start=1):
+                    data = {
+                        'name': tags[0],
+                        'color': tags[1],
+                        'slug': tags[2],
+                    }
+                    bulk.append(Tag(**data))
+                    if count % 1000 == 0:
+                        self.batch(bulk)
+                        bulk = []
+                self.batch(bulk)
         except Exception as error:
             raise CommandError(error)
         message = f'{count} elements was uploaded to database'

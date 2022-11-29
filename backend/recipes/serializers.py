@@ -91,13 +91,14 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
 
     def validate_ingredients(self, values):
+        ingredient = Ingredient.objects.all()
         for value in values:
             id = value.get('id')
             amount = value.get('amount')
-            if not Ingredient.objects.filter(id=id).exists():
+            if not ingredient.filter(id=id).exists():
                 raise ValidationError(f'Ingredient with id: {id} isn`t exist')
             if isinstance(amount, int):
-                if amount < 0:
+                if amount <= 0:
                     raise ValidationError(
                         'Field `amount` must be great than zero'
                     )

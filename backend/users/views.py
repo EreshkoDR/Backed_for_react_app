@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, mixins
 
-from backend.paginators import CustomPaginationClass
-from backend.permissions import IsUserPermission
+from recipes.paginators import CustomPaginationClass
+from recipes.permissions import IsUserPermission
 from .models import User
 from .serializers import (ChangePasswordSerializer, LoginSerializer,
                           RegistrationSerializer, UserSerializer)

@@ -7,10 +7,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, mixins
 
-from backend.filters import IngredientFilter, RecipeFilter
-from backend.paginators import CustomPaginationClass
+from recipes.filters import IngredientFilter, RecipeFilter
+from recipes.paginators import CustomPaginationClass
 
-from backend.permissions import IsUserPermission, RecipesPermission
+from recipes.permissions import IsUserPermission, RecipesPermission
 from users.models import User
 from .models import Ingredient, Recipe, Tag
 from .serializers import (IngredientRecipeSerializer, IngredientSerializer,
@@ -37,7 +37,7 @@ class ListViewSet(GenericViewSet, mixins.ListModelMixin):
     pass
 
 
-class SubscribeViewSet(GenericViewSet, mixins.CreateModelMixin):
+class BaseSubscribeViewSet(GenericViewSet, mixins.CreateModelMixin):
     """
     ## ViewSet для подписок / отписок.
 
@@ -148,7 +148,7 @@ class SubscriptionViewSet(ListViewSet):
         return User.objects.filter(following__user=user)
 
 
-class RecipeFavoriteViewSet(SubscribeViewSet):
+class RecipeFavoriteViewSet(BaseSubscribeViewSet):
     permission_classes = [IsUserPermission]
     serializer_class = ResipeFavoriteSerializer
     lookup_id_find = 'recipe_id'
@@ -165,7 +165,7 @@ class RecipeFavoriteViewSet(SubscribeViewSet):
         subscribe.delete()
 
 
-class SubcribeToUserViewSet(SubscribeViewSet):
+class SubcribeToUserViewSet(BaseSubscribeViewSet):
     permission_classes = [IsUserPermission]
     serializer_class = SubscriptionSerializer
     lookup_id_find = 'user_id'
@@ -182,7 +182,7 @@ class SubcribeToUserViewSet(SubscribeViewSet):
         subscribe.delete()
 
 
-class ShoppingCartViewSet(SubscribeViewSet):
+class ShoppingCartViewSet(BaseSubscribeViewSet):
     permission_classes = [IsUserPermission]
     serializer_class = ResipeFavoriteSerializer
     lookup_id_find = 'recipe_id'

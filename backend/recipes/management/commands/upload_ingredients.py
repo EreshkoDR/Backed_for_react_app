@@ -11,6 +11,9 @@ class Command(BaseCommand):
     """Management комманда для загрузки данных в БД."""
     help = 'Upload ingredients to database'
 
+    def batch(self, bulk: list):
+        Ingredient.objects.bulk_create(bulk)
+
     def handle(self, *args, **options):
         """
         Для загрузки большого объема используется
@@ -20,15 +23,18 @@ class Command(BaseCommand):
             with open(DATA_DIR, 'r', encoding='utf-8') as csvfile:
                 ingredients = csv.reader(csvfile, dialect='excel')
                 bulk = []
-                count = 0
-                for name, measurement_unit in ingredients:
+                for count, ingredient in enumerate(ingredients, start=1):
+                    data = {
+                        'name': ingredient[0],
+                        'measurement_unit': ingredient[1]
+                    }
                     bulk.append(
-                        Ingredient(
-                            name=name, measurement_unit=measurement_unit
-                        )
+                        Ingredient(**data)
                     )
-                    count += 1
-                Ingredient.objects.bulk_create(bulk)
+                    if count % 1000 == 0:
+                        self.batch(bulk)
+                        bulk = []
+                self.batch(bulk)
         except Exception as error:
             raise CommandError(error)
         message = f'{count} elements was uploaded to database'

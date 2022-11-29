@@ -24,6 +24,12 @@ class User(AbstractUser):
     def __str__(self):
         return _('Пользователь') + f': {self.username}'
 
+    @property
+    def is_admin(self) -> bool:
+        if self.role == 'admin':
+            return True
+        return False
+
 
 class Subscription(models.Model):
     user = models.ForeignKey(

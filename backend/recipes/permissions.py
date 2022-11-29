@@ -8,7 +8,7 @@ class IsAdminPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.is_authenticated:
             return (
-                request.user.role == User.ADMIN
+                request.user.is_admin
                 or request.user.is_superuser
             )
         return False
@@ -16,7 +16,7 @@ class IsAdminPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_authenticated:
             return (
-                request.user.role == User.ADMIN
+                request.user.is_admin
                 or request.user.is_superuser
             )
         return False
@@ -42,6 +42,6 @@ class RecipesPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return (
             obj.author == request.user
-            or request.user.role == User.ADMIN
+            or request.user.is_admin
             or request.user.is_superadmin
         )

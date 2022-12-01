@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from recipes.models import Ingredient
 
-DATA_DIR = '../data/ingredients.csv'
+DATA_DIR = 'data/ingredients.csv'
 
 
 class Command(BaseCommand):

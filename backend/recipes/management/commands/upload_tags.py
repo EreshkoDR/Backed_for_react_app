@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from recipes.models import Tag
 
-DATA_DIR = '../data/tags.csv'
+DATA_DIR = 'data/tags.csv'
 
 
 class Command(BaseCommand):

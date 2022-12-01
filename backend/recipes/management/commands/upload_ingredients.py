@@ -14,6 +14,9 @@ class Command(BaseCommand):
     def batch(self, bulk: list):
         Ingredient.objects.bulk_create(bulk)
 
+    def exists_record(self, queryset, name: str) -> bool:
+        return queryset.filter(name=name).exists()
+
     def handle(self, *args, **options):
         """
         Для загрузки большого объема используется
@@ -23,15 +26,19 @@ class Command(BaseCommand):
             with open(DATA_DIR, 'r', encoding='utf-8') as csvfile:
                 ingredients = csv.reader(csvfile, dialect='excel')
                 bulk = []
-                for count, ingredient in enumerate(ingredients, start=1):
+                current_ingredients = Ingredient.objects.all()
+                count = 0
+                for ingredient in ingredients:
                     data = {
                         'name': ingredient[0],
                         'measurement_unit': ingredient[1]
                     }
-                    bulk.append(
-                        Ingredient(**data)
-                    )
-                    if count % 1000 == 0:
+                    if not self.exists_record(
+                        current_ingredients, data.get('name')
+                    ):
+                        bulk.append(Ingredient(**data))
+                        count += 1
+                    if len(bulk) % 1000 == 0:
                         self.batch(bulk)
                         bulk = []
                 self.batch(bulk)

@@ -100,7 +100,7 @@ class BaseSubscribeViewSet(GenericViewSet, mixins.CreateModelMixin):
 
 
 class TagViewSet(ListRetrieveViewSet):
-    permission_classes = [IsAuthorPermission]
+    permission_classes = [RecipesPermission]
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
     pagination_class = None

@@ -14,6 +14,9 @@ class Command(BaseCommand):
     def batch(self, bulk: list):
         Tag.objects.bulk_create(bulk)
 
+    def exists_record(self, queryset, name: str) -> bool:
+        return queryset.filter(name=name).exists()
+
     def handle(self, *args, **options):
         """
         Для загрузки большого объема используется
@@ -22,15 +25,19 @@ class Command(BaseCommand):
         try:
             with open(DATA_DIR, 'r', encoding='utf-8') as csvfile:
                 tags = csv.reader(csvfile, dialect='excel')
+                current_ingredients = Tag.objects.all()
                 bulk = []
-                for count, tags in enumerate(tags, start=1):
+                count = 0
+                for tag in tags:
                     data = {
-                        'name': tags[0],
-                        'color': tags[1],
-                        'slug': tags[2],
+                        'name': tag[0],
+                        'color': tag[1],
+                        'slug': tag[2],
                     }
-                    bulk.append(Tag(**data))
-                    if count % 1000 == 0:
+                    if not self.exists_record(current_ingredients, tag[0]):
+                        bulk.append(Tag(**data))
+                        count += 1
+                    if len(bulk) % 1000 == 0:
                         self.batch(bulk)
                         bulk = []
                 self.batch(bulk)

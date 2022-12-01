@@ -42,7 +42,7 @@ class Tag(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(
         _('Название ингредиента'),
-        max_length=50,
+        max_length=100,
     )
     measurement_unit = models.CharField(
         _('Единицы измерения'),
@@ -76,7 +76,7 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         _('Изображение рецепта'),
-        upload_to='recipes/image/',
+        upload_to='recipes/',
     )
     text = models.TextField(
         _('Описание рецепта'),

@@ -134,13 +134,13 @@ class RecipeViewSet(ListRetriveCreateUpdateDestroyViewSet):
 
 
 class IngredientRecipeViewSet(ListRetrieveViewSet):
-    permission_classes = [IsAuthorPermission]
+    permission_classes = [RecipesPermission]
     serializer_class = IngredientRecipeSerializer
     queryset = Ingredient.objects.all()
 
 
 class SubscriptionViewSet(ListViewSet):
-    permission_classes = [IsAuthorPermission]
+    permission_classes = [RecipesPermission]
     serializer_class = SubscriptionSerializer
     pagination_class = CustomPaginationClass
 
@@ -150,7 +150,7 @@ class SubscriptionViewSet(ListViewSet):
 
 
 class RecipeFavoriteViewSet(BaseSubscribeViewSet):
-    permission_classes = [IsAuthorPermission]
+    permission_classes = [RecipesPermission]
     serializer_class = ResipeFavoriteSerializer
     lookup_id_find = 'recipe_id'
     instance = Recipe
@@ -167,7 +167,7 @@ class RecipeFavoriteViewSet(BaseSubscribeViewSet):
 
 
 class SubcribeToUserViewSet(BaseSubscribeViewSet):
-    permission_classes = [IsAuthorPermission]
+    permission_classes = [RecipesPermission]
     serializer_class = SubscriptionSerializer
     lookup_id_find = 'user_id'
     instance = User
@@ -184,7 +184,7 @@ class SubcribeToUserViewSet(BaseSubscribeViewSet):
 
 
 class ShoppingCartViewSet(BaseSubscribeViewSet):
-    permission_classes = [IsAuthorPermission]
+    permission_classes = [RecipesPermission]
     serializer_class = ResipeFavoriteSerializer
     lookup_id_find = 'recipe_id'
     instance = Recipe
@@ -201,7 +201,7 @@ class ShoppingCartViewSet(BaseSubscribeViewSet):
 
 
 class DownloadShoppingCart(APIView):
-    permission_classes = [IsAuthorPermission]
+    permission_classes = [RecipesPermission]
 
     def get(self, request):
         user = request.user

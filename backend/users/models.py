@@ -26,9 +26,7 @@ class User(AbstractUser):
 
     @property
     def is_admin(self) -> bool:
-        if self.role == 'admin':
-            return True
-        return False
+        return self.role == self.ADMIN
 
 
 class Subscription(models.Model):

@@ -76,7 +76,7 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         _('Изображение рецепта'),
-        upload_to=os.path.join(settings.MEDIA_DIR, 'recipes/image/'),
+        upload_to='recipes/image/',
     )
     text = models.TextField(
         _('Описание рецепта'),

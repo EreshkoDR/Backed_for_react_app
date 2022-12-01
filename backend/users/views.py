@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, mixins
 
+from api.permissions import IsAuthorPermission
 from recipes.paginators import CustomPaginationClass
-from recipes.permissions import IsUserPermission
 from .models import User
 from .serializers import (ChangePasswordSerializer, LoginSerializer,
                           RegistrationSerializer, UserSerializer)
@@ -18,7 +18,7 @@ class CreateListRetrieveViewSet(GenericViewSet, mixins.RetrieveModelMixin,
 
 
 class UserViewSet(CreateListRetrieveViewSet):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
     serializer_class = UserSerializer
     queryset = User.objects.all()
     pagination_class = CustomPaginationClass
@@ -45,7 +45,7 @@ class UserViewSet(CreateListRetrieveViewSet):
 
 
 class SetPasswordView(APIView):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
 
     def post(self, request):
         user = request.user
@@ -72,7 +72,7 @@ class LoginView(APIView):
 
 
 class LogoutView(APIView):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
 
     def post(self, request):
         utils.logout_user(request)

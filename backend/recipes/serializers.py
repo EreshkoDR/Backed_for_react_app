@@ -210,7 +210,7 @@ class SubscriptionSerializer(UserSerializer):
         """
         request = self.context['request']
         recipes_limit = request.query_params.get('recipes_limit')
-        if recipes_limit is None:
+        if recipes_limit is None or not isinstance(recipes_limit, int):
             recipes_limit = settings.LIMIT_RECIPES
         queryset = user.recipes.all()[:int(recipes_limit)]
         return ResipeFavoriteSerializer(queryset, many=True).data

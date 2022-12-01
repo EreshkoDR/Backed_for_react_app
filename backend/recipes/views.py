@@ -7,10 +7,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, mixins
 
+from api.permissions import IsAuthorPermission
 from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.paginators import CustomPaginationClass
 
-from recipes.permissions import IsUserPermission, RecipesPermission
+from recipes.permissions import RecipesPermission
 from users.models import User
 from .models import Ingredient, Recipe, Tag
 from .serializers import (IngredientRecipeSerializer, IngredientSerializer,
@@ -99,7 +100,7 @@ class BaseSubscribeViewSet(GenericViewSet, mixins.CreateModelMixin):
 
 
 class TagViewSet(ListRetrieveViewSet):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
     pagination_class = None
@@ -133,13 +134,13 @@ class RecipeViewSet(ListRetriveCreateUpdateDestroyViewSet):
 
 
 class IngredientRecipeViewSet(ListRetrieveViewSet):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
     serializer_class = IngredientRecipeSerializer
     queryset = Ingredient.objects.all()
 
 
 class SubscriptionViewSet(ListViewSet):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
     serializer_class = SubscriptionSerializer
     pagination_class = CustomPaginationClass
 
@@ -149,7 +150,7 @@ class SubscriptionViewSet(ListViewSet):
 
 
 class RecipeFavoriteViewSet(BaseSubscribeViewSet):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
     serializer_class = ResipeFavoriteSerializer
     lookup_id_find = 'recipe_id'
     instance = Recipe
@@ -166,7 +167,7 @@ class RecipeFavoriteViewSet(BaseSubscribeViewSet):
 
 
 class SubcribeToUserViewSet(BaseSubscribeViewSet):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
     serializer_class = SubscriptionSerializer
     lookup_id_find = 'user_id'
     instance = User
@@ -183,7 +184,7 @@ class SubcribeToUserViewSet(BaseSubscribeViewSet):
 
 
 class ShoppingCartViewSet(BaseSubscribeViewSet):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
     serializer_class = ResipeFavoriteSerializer
     lookup_id_find = 'recipe_id'
     instance = Recipe
@@ -200,7 +201,7 @@ class ShoppingCartViewSet(BaseSubscribeViewSet):
 
 
 class DownloadShoppingCart(APIView):
-    permission_classes = [IsUserPermission]
+    permission_classes = [IsAuthorPermission]
 
     def get(self, request):
         user = request.user

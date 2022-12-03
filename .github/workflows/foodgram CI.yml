@@ -18,8 +18,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE}}
           script: |
-            sudo docker-compose stop
-            sudo docker-compose rm -f
+            sudo infra/docker-compose stop
+            sudo infra/docker-compose rm -f
             touch .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo DEBUG_MODE=${{ secrets.DEBUG_MODE }} >> .env
@@ -38,10 +38,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            sudo docker-compose exec -T backend python manage.py migrate
-            sudo docker-compose exec -T backend python manage.py collectstatic --no-input
-            sudo docker-compose exec -T backend python manage.py upload_tags
-            sudo docker-compose exec -T backend python manage.py upload_ingredients
+            sudo infra/docker-compose exec -T backend python manage.py migrate
+            sudo infra/docker-compose exec -T backend python manage.py collectstatic --no-input
+            sudo infra/docker-compose exec -T backend python manage.py upload_tags
+            sudo infra/docker-compose exec -T backend python manage.py upload_ingredients
 
   send_message:
 

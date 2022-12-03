@@ -18,7 +18,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE}}
           script: |
-            cd infra
             sudo docker-compose stop
             sudo docker-compose rm -f
             touch .env
@@ -39,7 +38,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            cd infra
             sudo docker-compose exec -T backend python manage.py migrate
             sudo docker-compose exec -T backend python manage.py collectstatic --no-input
             sudo docker-compose exec -T backend python manage.py upload_tags

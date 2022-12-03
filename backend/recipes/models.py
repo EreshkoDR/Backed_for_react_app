@@ -1,6 +1,3 @@
-import os
-
-from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -106,6 +103,9 @@ class IngredientRecipe(models.Model):
     )
     amount = models.IntegerField(validators=[validate_min_value])
 
+    def __str__(self):
+        return self.ingredient
+
 
 class FavoriteRecipe(models.Model):
     user = models.ForeignKey(
@@ -140,7 +140,7 @@ class ShoppingCart(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='carts',
-    )   
+    )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,

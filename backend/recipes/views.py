@@ -7,15 +7,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, mixins
 
-from recipes.filters import IngredientFilter, RecipeFilter
-from recipes.paginators import CustomPaginationClass
-from recipes.permissions import RecipesPermission
-from users.models import User
 from .models import Ingredient, Recipe, Tag
 from .serializers import (IngredientRecipeSerializer, IngredientSerializer,
                           RecipeSerializer, ResipeFavoriteSerializer,
                           SubscriptionSerializer, TagSerializer)
 from .shopping_cart import ShoppingList
+from recipes.filters import IngredientFilter, RecipeFilter
+from recipes.paginators import CustomPaginationClass
+from recipes.permissions import RecipesPermission
+from users.models import User
 
 
 class ListRetrieveViewSet(GenericViewSet, mixins.RetrieveModelMixin,

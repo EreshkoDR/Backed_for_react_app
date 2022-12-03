@@ -1,8 +1,8 @@
 import base64
 
 from django.conf import settings
-from django.core.files.base import ContentFile
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.base import ContentFile
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
 

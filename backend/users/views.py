@@ -4,11 +4,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, mixins
 
-from api.permissions import IsAuthorPermission
-from recipes.paginators import CustomPaginationClass
 from .models import User
 from .serializers import (ChangePasswordSerializer, LoginSerializer,
                           RegistrationSerializer, UserSerializer)
+from api.permissions import IsAuthorPermission
+from recipes.paginators import CustomPaginationClass
 
 
 class CreateListRetrieveViewSet(GenericViewSet, mixins.RetrieveModelMixin,

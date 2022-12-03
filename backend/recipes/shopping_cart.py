@@ -15,7 +15,7 @@ class ShoppingList:
             .values('name', 'measurement_unit')
             .annotate(amount=Sum('ingredientrecipes__amount'))
             .order_by('name')
-            )
+        )
         return arr
 
     def get_txt_file(self):

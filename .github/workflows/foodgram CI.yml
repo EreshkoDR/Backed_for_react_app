@@ -8,7 +8,7 @@ jobs:
   deploy:
 
     runs-on: ubuntu-latest
-    needs: push_dockerfile_to_docker_hub
+    # needs: push_dockerfile_to_docker_hub
     steps:
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master

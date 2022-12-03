@@ -19,7 +19,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE}}
           script: |
             sudo docker-compose -f infra/docker-compose.yml down 
-            sudo docker-composef -f infra/docker-compose.yml pull
+            sudo docker-compose -f infra/docker-compose.yml pull
             touch .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo DEBUG_MODE=${{ secrets.DEBUG_MODE }} >> .env

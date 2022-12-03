@@ -36,7 +36,7 @@ class Tag(models.Model):
         verbose_name_plural = _('Список тегов')
 
     def __str__(self):
-        return _('Tег') + f': {self.name}'
+        return self.name
 
 
 class Ingredient(models.Model):

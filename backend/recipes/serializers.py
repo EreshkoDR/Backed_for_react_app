@@ -2,6 +2,7 @@ import base64
 
 from django.conf import settings
 from django.core.files.base import ContentFile
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
 
@@ -16,6 +17,14 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('id', 'name', 'color', 'slug')
+
+    def to_internal_value(self, id):
+        if isinstance(id, int):
+            try:
+                return Tag.objects.get(id=id)
+            except ObjectDoesNotExist as error:
+                raise ValidationError(error)
+        raise ValidationError('Tag field accept `id` which should be int')
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -66,9 +75,7 @@ class Base64ImageField(serializers.ImageField):
 
 class RecipeSerializer(serializers.ModelSerializer):
     """Сериализатор модели `Recipe`."""
-    tags = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Tag.objects.all()
-    )
+    tags = TagSerializer(many=True)
     author = UserSerializer(read_only=True)
     ingredients = IngredientRecipeSerializer(many=True)
     is_favorited = serializers.SerializerMethodField(

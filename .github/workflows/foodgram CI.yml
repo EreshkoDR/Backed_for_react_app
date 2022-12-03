@@ -18,9 +18,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE}}
           script: |
-            ls
-            sudo docker-compose -f infra/docker-compose.yml down 
-            sudo docker-compose -f infra/docker-compose.yml pull
+            cd foodgram-project-react/infra/
+            sudo docker-compose down 
+            sudo docker-compose pull
             touch .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo DEBUG_MODE=${{ secrets.DEBUG_MODE }} >> .env
@@ -39,10 +39,11 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            sudo docker-compose exec -T backend python manage.py migrate -f infra/docker-compose.yml
-            sudo docker-compose exec -T backend python manage.py collectstatic --no-input -f infra/docker-compose.yml
-            sudo docker-compose exec -T backend python manage.py upload_tags -f infra/docker-compose.yml
-            sudo docker-compose exec -T backend python manage.py upload_ingredients -f infra/docker-compose.yml
+            cd foodgram-project-react/infra/
+            sudo docker-compose exec -T backend python manage.py migrate
+            sudo docker-compose exec -T backend python manage.py collectstatic --no-input
+            sudo docker-compose exec -T backend python manage.py upload_tags
+            sudo docker-compose exec -T backend python manage.py upload_ingredients
 
   send_message:
 

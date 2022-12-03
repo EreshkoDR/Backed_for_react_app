@@ -18,8 +18,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE}}
           script: |
-            sudo docker-compose stop
-            sudo docker-compose rm backend
+            sudo docker-compose stop -f infra/docker-compose.yml
+            sudo docker-compose rm backend -f infra/docker-compose.yml
             touch .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo DEBUG_MODE=${{ secrets.DEBUG_MODE }} >> .env

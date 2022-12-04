@@ -9,7 +9,7 @@ services:
       - .env
 
   backend:
-    image: ereshkodr/foodgram:v1.0
+    image: ereshkodr/foodgram:latest
     restart: always
     volumes:
       - static_value:/app/static

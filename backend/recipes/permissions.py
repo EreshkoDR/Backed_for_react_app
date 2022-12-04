@@ -16,4 +16,5 @@ class RecipesPermission(permissions.BasePermission):
                 or request.user.is_admin
                 or request.user.is_superadmin
             )
-        return False
+        else:
+            return request.method in permissions.SAFE_METHODS

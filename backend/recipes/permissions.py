@@ -10,8 +10,9 @@ class RecipesPermission(permissions.BasePermission):
         )
 
     def has_object_permission(self, request, view, obj):
-        return (
-            obj.author == request.user
-            or request.user.is_admin
-            or request.user.is_superadmin
-        )
+        if request.user.is_authenticated:
+            return (
+                obj.author == request.user
+                or request.user.is_admin
+                or request.user.is_superadmin
+            )

@@ -20,7 +20,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG_MODE')
 
 
-ALLOWED_HOSTS = ['ereshkoproject.ddns.net', '84.201.163.79', 'http://ereshkoproject.ddns.net']
+ALLOWED_HOSTS = ['ereshkoproject.ddns.net', '84.201.163.79', 'http://ereshkoproject.ddns.net', '*']
 
 
 # Application definition

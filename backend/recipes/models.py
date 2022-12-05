@@ -88,6 +88,7 @@ class Recipe(models.Model):
     )
 
     class Meta:
+        ordering = ['-create']
         verbose_name = _('Список рецептов')
         verbose_name_plural = _('Список рецептов')
 

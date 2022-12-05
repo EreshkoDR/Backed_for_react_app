@@ -205,7 +205,7 @@ class DownloadShoppingCart(APIView):
         user = request.user
         cart = ShoppingList(user)
         list = cart.get_list()
-        with open('', 'w') as file:
+        with open(f'media/shopping_cart/{user.username}', 'w') as file:
             file.write(list)
             return FileResponse(
                 file, as_attachment=True, filename='список.txt'

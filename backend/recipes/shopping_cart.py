@@ -18,7 +18,7 @@ class ShoppingList:
         )
         return arr
 
-    def get_txt_file(self):
+    def get_list(self):
         text = 'Ваш список покупок:\n\n'
         shopping_list = self.get_shopping_list()
         for recipe in shopping_list:

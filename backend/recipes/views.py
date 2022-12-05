@@ -205,4 +205,6 @@ class DownloadShoppingCart(APIView):
         user = request.user
         cart = ShoppingList(user)
         file = cart.get_file_direction()
-        return FileResponse(file, as_attachment=True, filename='список.txt')
+        return FileResponse(
+            str(file), as_attachment=True, filename='список.txt'
+        )

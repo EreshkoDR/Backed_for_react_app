@@ -31,6 +31,6 @@ class ShoppingList:
 
     def get_file_direction(self):
         direction = BASE_DIR / f'media/shopping_list/{self.user.username}.txt'
-        with open(direction, 'w') as file:
+        with open(direction, 'x') as file:
             file.write(self.create_text())
         return direction

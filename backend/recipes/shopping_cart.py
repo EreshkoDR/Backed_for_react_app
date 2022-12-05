@@ -18,7 +18,7 @@ class ShoppingList:
         )
         return arr
 
-    def get_list(self):
+    def create_text(self) -> str:
         text = 'Ваш список покупок:\n\n'
         shopping_list = self.get_shopping_list()
         for recipe in shopping_list:
@@ -27,3 +27,9 @@ class ShoppingList:
             amount = recipe.get('amount')
             text += (f'• {name} ({unit}) - {amount}\n')
         return text
+
+    def get_file_direction(self):
+        direction = f'media/shopping_list/{self.user.username}.txt'
+        with open(direction, 'w') as file:
+            file.write(self.create_text())
+        return direction

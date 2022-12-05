@@ -204,9 +204,5 @@ class DownloadShoppingCart(APIView):
     def get(self, request):
         user = request.user
         cart = ShoppingList(user)
-        list = cart.get_list()
-        with open(f'{user.username}.txt', 'w') as file:
-            file.write(list)
-            return FileResponse(
-                file, as_attachment=True, filename='список.txt'
-            )
+        file = cart.get_file_direction()
+        return FileResponse(file, as_attachment=True, filename='список.txt')

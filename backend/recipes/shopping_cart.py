@@ -1,6 +1,7 @@
 from django.db.models import Sum
 
 from .models import Ingredient
+from backend.settings import BASE_DIR
 
 
 class ShoppingList:
@@ -29,7 +30,7 @@ class ShoppingList:
         return text
 
     def get_file_direction(self):
-        direction = f'media/shopping_list/{self.user.username}.txt'
+        direction = BASE_DIR / f'media/shopping_list/{self.user.username}.txt'
         with open(direction, 'w') as file:
             file.write(self.create_text())
         return direction

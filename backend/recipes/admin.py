@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import FavoriteRecipe, Ingredient, Recipe, Tag, ShoppingCart
+from .models import FavoriteRecipe, Ingredient, Recipe, ShoppingCart, Tag
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -20,7 +20,13 @@ class RecipeAdmin(admin.ModelAdmin):
     list_filter = ('create', 'cooking_time')
 
 
+class ShoppingCartAdmin(admin.ModelAdmin):
+    list_display = ('user', )
+    search_fields = ('user', )
+
+
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(FavoriteRecipe)
+admin.site.register(ShoppingCart, ShoppingCartAdmin)

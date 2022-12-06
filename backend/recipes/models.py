@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from recipes.validators import validate_min_value
+from recipes.validators import validate_min_amount, validate_min_value
 from users.models import User
 
 
@@ -102,10 +102,10 @@ class IngredientRecipe(models.Model):
         on_delete=models.CASCADE,
         related_name='ingredientrecipes'
     )
-    amount = models.IntegerField(validators=[validate_min_value])
+    amount = models.IntegerField(validators=[validate_min_amount])
 
     def __str__(self):
-        return self.ingredient
+        return self.ingredient.name
 
 
 class FavoriteRecipe(models.Model):

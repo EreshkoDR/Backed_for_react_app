@@ -27,6 +27,6 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
-admin.site.register(Recipe)
+admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(FavoriteRecipe)
 admin.site.register(ShoppingCart, ShoppingCartAdmin)

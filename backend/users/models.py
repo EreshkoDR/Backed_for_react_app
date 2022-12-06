@@ -23,7 +23,7 @@ class User(AbstractUser):
         verbose_name_plural = _('Пользователи')
 
     def __str__(self):
-        return _('Пользователь') + f': {self.username}'
+        return self.username
 
     @property
     def is_admin(self) -> bool:
@@ -57,7 +57,4 @@ class Subscription(models.Model):
         ]
 
     def __str__(self):
-        return (
-            _('Подписка пользователя') + f': {self.user} '
-            + _('на') + f': {self.author}'
-        )
+        return f'{self.user}:{self.author}'
